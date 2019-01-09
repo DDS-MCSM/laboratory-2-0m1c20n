@@ -9,3 +9,6 @@ Topics covered:
 - R packages
 - devtools package
 - XML parsing
+
+### Student
+Oriol Mominó Villegas
