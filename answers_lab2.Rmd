@@ -5,8 +5,13 @@ date: "09/01/2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(xml2)
+library(stringr)
+library(tidyr)
+library(dplyr)
+source("./cpe.R")
 ```
 
 # Solution for the Laboratory 2
@@ -15,22 +20,31 @@ This is an R Markdown document including the solutions to the laboratory 2 for t
 
 ## Exploring the CPE Standard
 
-Using the functions implemented in the file `cpe.R`, it is possible to create a data frame containing the following columns:
+Using the functions implemented in the file `cpe.R`, it is possible to create a data frame from the CPE data.
 
-```{r file_load, error=FALSE}
-source("./cpe.R")
-df <- ParseCPEData(cpe.file)
+First of all we have to download and unzip the official CPE Dictionary v2.3.
+```{r cpe_file, error=FALSE}
+cpe.file <- DownloadCPEData()
 ```
 
-Complete previously defined functions so that the package allows the generation of a data frame containing the data parsed from the CPE XML file.
+Now we can get the CPE data by reading the downloaded XML file.
+```{r cpes_xml, error=FALSE}
+cpes.xml <- ReadXMLCPEFile(cpe.file)
+```
 
-```{r colnames, include=FALSE}
+Once we have read the XML we have to **transform the list into a data frame**.
+```{r get_cpes, error=FALSE}
+cpes <- GetCPEItems(cpes.xml)
+colnames(cpes)
+```
+
+Finally we add to the data frame some columns with the different fields of the cpe factoring their values.
+```{r clean_cpes, error=FALSE}
+df <- CleanCPEs(cpes)
 colnames(df)
 ```
 
-Including fields such as...
-
-
-```{r important_columns, include=FALSE}
-
+Here we can see some important values of 5 randoms rows from the data frame.
+```{r random_cpes, error=FALSE}
+sample_n(select(df, "product", "version", "vendor"),5)
 ```
