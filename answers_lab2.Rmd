@@ -5,7 +5,7 @@ date: "09/01/2019"
 output: html_document
 ---
 
-```{r, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(xml2)
 library(stringr)
